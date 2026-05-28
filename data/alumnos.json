@@ -196,14 +196,5 @@
     "fechaAlta": "2026-05-11",
     "modificacion": "2026-05-11",
     "isActive": true
-  },
-  {
-    "legajo": 10024,
-    "nombre": "Agustin",
-    "apellido": "Cepeda",
-    "email": "agus@gmail.com",
-    "fechaAlta": "2026-05-28",
-    "modificacion": "2026-05-28",
-    "isActive": true
   }
 ]
