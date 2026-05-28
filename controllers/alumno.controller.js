@@ -61,13 +61,13 @@ const postNewAlumno = async (req, res) => {
     alumnos.push(alumnoNuevo)
     console.log(nuevoAlumno.getAllAttributes())
 
-    fs.writeFile(
-      './data/alumnos.json',
-      JSON.stringify(alumnoNuevo, null, 2),
-      'utf8'
-    )
+      await fs.writeFile(
+    './data/alumnos.json',
+    JSON.stringify(alumnos, null, 2),
+    'utf8'
+)
 
-    return res.status(200).json({
+    return res.status(201).json({
       msg: `Se agregó al sistema el alumno nuevo con el legajo n° ${nuevoLejago}`,
       alumnoNuevo
     })
@@ -125,9 +125,9 @@ const putAlumnoBylegajo = async (req, res) => {
 
     const alumnoPush = alumnoModificado.getAllAttributes()
 
-    fs.writeFile(
+    await fs.writeFile(
       './data/alumnos.json',
-      JSON.stringify(alumnoPush, null, 2),
+      JSON.stringify(alumnos, null, 2),
       'utf8'
     )
 
