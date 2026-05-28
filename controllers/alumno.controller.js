@@ -79,8 +79,8 @@ const postNewAlumno = async (req, res) => {
 }
 
 const putAlumnoBylegajo = async (req, res) => {
-  const { legajo } = req.params
   try {
+    const { legajo } = req.params
     const { nombre, apellido, email, isActive } = req.body
 
     const data = await fs.readFile('./data/alumnos.json', 'utf8')
@@ -96,48 +96,35 @@ const putAlumnoBylegajo = async (req, res) => {
       })
     }
 
-    const alumnoEncontrado = alumnos[index]
+    // modificar directamente el objeto
+    if (nombre) alumnos[index].nombre = nombre
+    if (apellido) alumnos[index].apellido = apellido
+    if (email) alumnos[index].email = email
 
-    const alumnoModificado = new AlumnoModel(
-      alumnoEncontrado.legajo,
-      alumnoEncontrado.nombre,
-      alumnoEncontrado.apellido,
-      alumnoEncontrado.email,
-      alumnoEncontrado.fechaAlta,
-      alumnoEncontrado.isActive
-    )
-
-    if (nombre) {
-      alumnoEncontrado.setNombre(nombre)
+    // importante para booleanos
+    if (typeof isActive === 'boolean') {
+      alumnos[index].isActive = isActive
     }
 
-    if (apellido) {
-      alumnoEncontrado.setApellido(apellido)
-    }
+    alumnos[index].modificacion =
+      new Date().toISOString().split('T')[0]
 
-    if (email) {
-      alumnoEncontrado.setEmail(email)
-    }
-
-    if (isActive) {
-      alumnoEncontrado.setIsActive(isActive)
-    }
-
-    const alumnoPush = alumnoModificado.getAllAttributes()
-
+    // guardar array completo
     await fs.writeFile(
       './data/alumnos.json',
       JSON.stringify(alumnos, null, 2),
       'utf8'
     )
 
-    return res.status(201).json({
-      msg: `Se modificó correctamente el alumno con legajo n° ${legajo}`,
-      alumnoModificado: `${alumnoPush}`
+    return res.status(200).json({
+      msg: `Alumno actualizado correctamente`,
+      alumno: alumnos[index]
     })
   } catch (error) {
+    console.log(error)
+
     return res.status(500).json({
-      error: `No se pudieron modificar los datos del alumno con legajo n° ${legajo}`
+      error: `No se pudieron modificar los datos del alumno`
     })
   }
 }
