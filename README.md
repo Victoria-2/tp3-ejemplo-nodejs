@@ -1,12 +1,5 @@
-# Documentación #
-### El archivo README.md debe incluir lo siguiente: ###
-- Número de grupo e integrantes.
-- Nombre del proyecto y su descripción.
-- Metodología de trabajo con Git y GitHub.
-- División de los archivos entre los integrantes.
-- Distribución de los archivos y carpetas.
-- Un 90% de las funciones explicadas a detalle.
-- Documentación con ‘Postman’ de todos los métodos (GET, PUT, DELETE, POST).
-- Mínimo un ejemplo de la estructura de cada archivo JSON utilizado (no integrar varios “arrays” en un mismo archivo).
-- Link del deploy en Render.
-- Link al repositorio con el front-end.
+### Endpoints de Alumnos (Desarrollado por [Maximo Moraes])
+
+* getAlumnoAll (GET /alumnos): Aca arme la funcion asincrona para traer a todos los alumnos. Basicamente lee el archivo alumnos.json usando fs.promises, lo parsea y devuelve el array entero. Si sale todo bien tira un estado 200. Si llega a explotar algo leyendo el archivo o falla el server, el catch agarra el error y devuelve un 500.
+
+* getAlumnoById (GET /alumnos/:legajo): Este endpoint es para buscar un alumno en especifico. Agarra el parametro que le pasamos por la URL (req.params) y le manda un .find() al array para buscar ese numero exacto. Si lo encuentra devuelve los datos con un 200. Si pones un legajo cualquiera tira un 404, y si hay algun error raro de fondo devuelve 500.
