@@ -8,9 +8,9 @@ const getAlumnoAll = async (req, res) => {
     return res.status(200).json(alumnos)
   } catch (error) {
     console.log(error)
-    return res
-      .status(500)
-      .json({ error: 'No se puedieron obtener los datos de los alumnos' })
+    return res.status(500).json({
+      error: `No se pudo obtener el datalle del alumno con legajo n° ${legajo}`
+    })
   }
 }
 
