@@ -3,7 +3,8 @@ const {
   getAlumnoAll,
   getAlumnoById,
   postAlumno,
-  getAlumnoBySearch
+  getAlumnoBySearch,
+  deleteAlumno
 } = require('../controllers/alumno.controller')
 
 const rutas = Router()
@@ -12,5 +13,6 @@ rutas.get('/search', getAlumnoBySearch)
 rutas.get('/', getAlumnoAll)
 rutas.get('/:legajo', getAlumnoById)
 rutas.post('/', postAlumno)
+rutas.delete('/:legajo', deleteAlumno)
 
 module.exports = rutas
