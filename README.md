@@ -1,44 +1,3 @@
-# Documentación #
-### El archivo README.md debe incluir lo siguiente: ###
-- Número de grupo e integrantes.
-- Nombre del proyecto y su descripción.
-- Metodología de trabajo con Git y GitHub.
-- División de los archivos entre los integrantes.
-- Distribución de los archivos y carpetas.
-- Un 90% de las funciones explicadas a detalle.
-- Documentación con ‘Postman’ de todos los métodos (GET, PUT, DELETE, POST).
-- Mínimo un ejemplo de la estructura de cada archivo JSON utilizado (no integrar varios “arrays” en un mismo archivo).
-- Link del deploy en Render.
-- Link al repositorio con el front-end.
-
-
-Implentacion de NOTAS - Valentina Guerrieri
-hice el GET/notas que obtiene las notas alamcenadas en data/extras/sys-notas.json, con la funcion getNotAll. 
-![GET Notas](images/get-notas.jpeg)
-Esto significa que lee el archivo sys-notas.json, convierte el contendio JSON a un arreglo de objetos y devuelve todas las notas registradas.
-También implemente el endpoint POST /notas, que permite agregar una nueva nota al sistema mediante la funcion postNota.
-![POST Notas](images/post-notas.jpeg)
-Esta función lee el archivo sys-notas.json, obtiene los datos enviados en req.body, genera un nuevo identificador, agrega la nueva nota al arreglo, guarda los cambios en el archivo JSON y devuelve la nota creada
-Pruebas realizadas
-
-Los endpoints fueron probados mediante Postman.
-
-GET/notas
-Respuesta exitosa: 200 OK
-Devuelve todas las notas registradas.
-POST /notas
-Respuesta exitosa: 201 Created
-Agrega una nueva nota y devuelve el objeto creado.
-
-ejemplo de registro:
-
-{
-  "id": 1,
-  "legajo": 10001,
-  "idMateria": "MAT101",
-  "nota": 9,
-  "fecha": "03-04-24"
-}
 # Trabajo Práctico N°4: Consumo de APIs, Arquitectura MVC, Gestión de Datos y Deploys
 
 Proyecto de desarrollo web para el **Trabajo Práctico N°4** de Programación III. Esta etapa constituye un sistema completo de gestión de alumnos mediante una **API REST** construida con Node.js, Express y TypeScript. La API se encuentra desplegada en **Render** para acceso remoto y utiliza arquitectura MVC con persistencia de datos en archivos JSON locales.
@@ -183,6 +142,24 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 
 ---
 
+### Notas
+
+#### `GET /notas`
+
+**Descripción:** Obtiene la lista completa de todas las notas registradas en el sistema.
+
+![Screenshot de Postman](./docs/screenshots/get-notas.jpeg)
+
+---
+
+#### `POST /notas`
+
+**Descripción:** Registra una nueva nota en el sistema.
+
+![Screenshot de Postman](./docs/screenshots/post-notas.jpeg)
+
+---
+
 ## 📂 Estructura de Archivos JSON
 
 ### Alumnos (`data/alumnos.json`)
@@ -248,5 +225,19 @@ Función **asíncrona** que obtiene la lista completa de materias. Lee el archiv
 #### `postMateria()`
 
 Procesa el registro de nuevas materias mediante `POST`. Realiza validación defensiva verificando que todos los campos obligatorios (`idMateria`, `nombre`, `cuatrimestre`) estén presentes en el cuerpo de la solicitud; si falta alguno, retorna `400 Bad Request`. Lee el archivo `sys-materias.json`, utiliza el método `.find()` para verificar si el `idMateria` ya existe en el sistema; en caso afirmativo, retorna `409 Conflict` indicando duplicación. Agrega la nueva materia al array y persiste los cambios reescribiendo el archivo con `fs.writeFile()`. Si la materia se registra exitosamente, retorna `201 Created` con el objeto creado; si ocurre cualquier otro error durante el proceso, captura la excepción y retorna estado `500`.
+
+---
+
+### Controllers/Notas
+
+#### `getNotas()`
+
+Función **asíncrona** que obtiene la lista completa de notas registradas. Lee el archivo `sys-notas.json` ubicado en la carpeta `extras` mediante `fs.promises` para operaciones de lectura no bloqueante. Implementa un bloque `try/catch` para manejo defensivo de errores. Convierte el contenido del archivo (formato texto) a objeto JavaScript mediante `JSON.parse()` y devuelve el array completo de notas al cliente con código HTTP `200`. Si falla la lectura del archivo, captura la excepción y retorna estado `500`.
+
+---
+
+#### `postNota()`
+
+Procesa el registro de nuevas notas mediante `POST`. Realiza validación defensiva verificando que todos los campos obligatorios estén presentes en el cuerpo de la solicitud; si falta alguno, retorna `400 Bad Request`. Lee el archivo `sys-notas.json`, genera automáticamente un nuevo identificador único para la nota, obtiene los datos enviados mediante `req.body`, agrega la nueva nota al array de notas y persiste los cambios reescribiendo el archivo con `fs.writeFile()`. Si la nota se registra exitosamente, retorna `201 Created` con el objeto creado; si ocurre cualquier otro error durante el proceso, captura la excepción y retorna estado `500`.
 
 ---
