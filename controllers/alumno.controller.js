@@ -1,7 +1,9 @@
 const fs = require('fs').promises
 const path = require('path')
-const AlumnoModel = require('../models/alumno.model')
+// destructuring para obtener la clase
+const { AlumnoModel } = require('../models/alumno.model')
 
+// ruta absoluta del archivo de datos para compatibilidad en diferentes entornos
 const dataPath = path.join(__dirname, '../data/alumnos.json')
 
 const getAlumnoAll = async (req, res) => {
@@ -80,8 +82,8 @@ const postAlumno = async (req, res) => {
       isActive !== undefined ? isActive : true // por defecto true si no viene en el body
     )
 
-    // convierte la instancia a un objeto plano para guardarlo en el JSON
-    const nuevoAlumno = { ...nuevoAlumnoInstancia }
+    // obtiene correctamente los atributos protegidos de la clase
+    const nuevoAlumno = nuevoAlumnoInstancia.getAllAttributes()
 
     alumnos.push(nuevoAlumno)
     await fs.writeFile(dataPath, JSON.stringify(alumnos, null, 2))
