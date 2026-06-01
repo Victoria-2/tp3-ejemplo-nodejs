@@ -128,5 +128,5 @@ module.exports = {
   getAlumnoAll,
   getAlumnoById,
   createAlumno,
-  searchAlumnos: getAlumnoBySearch
+  getAlumnoBySearch
 }
