@@ -1,13 +1,9 @@
-const { Router } = require('express')
+const { Router } = require('express');
+const { getMaterias, postMateria } = require('../../controllers/materia.controller');
 
-const {
-  getMateriaAll,
-  postMateria
-} = require('../../controllers/materia.controller')
+const rutas = Router();
 
-const rutas = Router()
+rutas.get('/', getMaterias);
+rutas.post('/', postMateria);
 
-rutas.get('/', getMateriaAll)
-rutas.post('/', postMateria)
-
-module.exports = rutas
+module.exports = rutas;

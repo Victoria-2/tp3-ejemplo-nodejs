@@ -1,76 +1,43 @@
-const fs = require('fs').promises
-const path = require('path')
+const fs = require('fs').promises;
+const path = './data/extras/sys-materias.json';
 
-const { MateriaModel } = require('../models/materia.model')
-
-const dataPath = path.join(
-  __dirname,
-  '../data/extras/sys-materias.json'
-)
-
-const getMateriaAll = async (req, res) => {
+const getMaterias = async (req, res) => {
   try {
-    const data = await fs.readFile(dataPath, 'utf8')
-    const materias = JSON.parse(data)
-
-    return res.status(200).json(materias)
+    const data = await fs.readFile(path, 'utf8');
+    const materias = JSON.parse(data);
+    return res.status(200).json(materias);
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error: 'No se pudieron obtener las materias'
-    })
+    console.log(error);
+    return res.status(500).json({ error: 'Error al obtener las materias' });
   }
-}
+};
 
 const postMateria = async (req, res) => {
   try {
-    const data = await fs.readFile(dataPath, 'utf8')
-    const materias = JSON.parse(data)
+    const { idMateria, nombre, cuatrimestre } = req.body;
 
-    const { idMateria, nombre, cuatrimestre } = req.body
-
+    // Validación básica
     if (!idMateria || !nombre || !cuatrimestre) {
-      return res.status(400).json({
-        error: 'Todos los campos son obligatorios'
-      })
+      return res.status(400).json({ msg: 'Faltan datos obligatorios (idMateria, nombre, cuatrimestre)' });
     }
 
-    const existe = materias.find(
-      (m) => m.idMateria === idMateria
-    )
+    const data = await fs.readFile(path, 'utf8');
+    const materias = JSON.parse(data);
 
-    if (existe) {
-      return res.status(409).json({
-        error: `Ya existe la materia ${idMateria}`
-      })
+    // Evitar duplicados
+    if (materias.find((m) => m.idMateria === idMateria)) {
+      return res.status(409).json({ msg: `La materia con id ${idMateria} ya existe` });
     }
 
-    const nuevaMateria = new MateriaModel(
-      idMateria,
-      nombre,
-      cuatrimestre
-    )
+    const nuevaMateria = { idMateria, nombre, cuatrimestre };
+    materias.push(nuevaMateria);
 
-    materias.push(nuevaMateria.getAllAttributes())
-
-    await fs.writeFile(
-      dataPath,
-      JSON.stringify(materias, null, 2)
-    )
-
-    return res.status(201).json({
-      message: 'Materia creada correctamente',
-      materia: nuevaMateria.getAllAttributes()
-    })
+    await fs.writeFile(path, JSON.stringify(materias, null, 2), 'utf8');
+    return res.status(201).json(nuevaMateria);
   } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error: 'No se pudo crear la materia'
-    })
+    console.log(error);
+    return res.status(500).json({ error: 'Error al guardar la materia' });
   }
-}
+};
 
-module.exports = {
-  getMateriaAll,
-  postMateria
-}
+module.exports = { getMaterias, postMateria };
