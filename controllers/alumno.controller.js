@@ -1,5 +1,8 @@
 const fs = require('fs').promises
+const path = require('path')
 const AlumnoModel = require('../models/alumno.model')
+
+const dataPath = path.join(__dirname, '../data/alumnos.json')
 
 const getAlumnoAll = async (req, res) => {
   try {
@@ -44,7 +47,7 @@ const getAlumnoById = async (req, res) => {
 // POST alumnos
 const postAlumno = async (req, res) => {
   try {
-    const data = await fs.readFile('./data/alumnos.json', 'utf8')
+    const data = await fs.readFile(dataPath, 'utf8')
     const alumnos = JSON.parse(data)
 
     const { nombre, apellido, email, legajo, isActive } = req.body
@@ -81,7 +84,7 @@ const postAlumno = async (req, res) => {
     const nuevoAlumno = { ...nuevoAlumnoInstancia }
 
     alumnos.push(nuevoAlumno)
-    await fs.writeFile('./data/alumnos.json', JSON.stringify(alumnos, null, 2))
+    await fs.writeFile(dataPath, JSON.stringify(alumnos, null, 2))
 
     console.log(`[POST] Alumno registrado de forma exitosa. Legajo: ${legajo}`)
 
@@ -98,7 +101,7 @@ const postAlumno = async (req, res) => {
 // GET alumno por apellido o isActive
 const getAlumnoBySearch = async (req, res) => {
   try {
-    const data = await fs.readFile('./data/alumnos.json', 'utf8')
+    const data = await fs.readFile(dataPath, 'utf8')
     let alumnos = JSON.parse(data)
 
     const { apellido, isActive } = req.query
