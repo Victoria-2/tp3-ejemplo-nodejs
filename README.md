@@ -141,6 +141,12 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 ![Screenshot de Postman](./docs/screenshots/postmaterias.png)
 
 ---
+#### `DELETE /alumnos/:legajo`
+
+**Descripción:** Realiza la baja lógica de un alumno, marcándolo como inactivo dentro del sistema.
+
+![Screenshot de Postman](./docs/screenshots/deleteAlumno.png)
+---
 
 ## 📂 Estructura de Archivos JSON
 
@@ -209,3 +215,11 @@ Función **asíncrona** que obtiene la lista completa de materias. Lee el archiv
 Procesa el registro de nuevas materias mediante `POST`. Realiza validación defensiva verificando que todos los campos obligatorios (`idMateria`, `nombre`, `cuatrimestre`) estén presentes en el cuerpo de la solicitud; si falta alguno, retorna `400 Bad Request`. Lee el archivo `sys-materias.json`, utiliza el método `.find()` para verificar si el `idMateria` ya existe en el sistema; en caso afirmativo, retorna `409 Conflict` indicando duplicación. Agrega la nueva materia al array y persiste los cambios reescribiendo el archivo con `fs.writeFile()`. Si la materia se registra exitosamente, retorna `201 Created` con el objeto creado; si ocurre cualquier otro error durante el proceso, captura la excepción y retorna estado `500`.
 
 ---
+
+#### `deleteAlumno()`
+
+Esta función se encarga de dar de baja a un alumno. Para hacerlo, busca el alumno por su `legajo` dentro del archivo `alumnos.json`.
+
+Si encuentra el registro, cambia su estado a inactivo y guarda los cambios. Si el alumno no existe, devuelve un error `404 Not Found`. Si ocurre algún problema durante el proceso, devuelve un error `500 Internal Server Error`.
+
+La eliminación es lógica, por lo que los datos del alumno no se borran, sino que quedan almacenados como inactivos.
