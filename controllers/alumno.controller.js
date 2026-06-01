@@ -139,49 +139,45 @@ const putAlumno = async (req, res) => {
     const { legajo } = req.params
     const { nombre, apellido, email, isActive } = req.body
 
-    // buscar alumno
+    // busca alumno
     const indexAlumno = alumnos.findIndex(
       (a) => Number(a.legajo) === Number(legajo)
     )
 
-    // error: no existe
+    //error: no existe
     if (indexAlumno === -1) {
       return res.status(400).json({
         error: `No existe un alumno con el legajo ${legajo}`
       })
     }
 
-    //no permite cambiar legajo
+    //error: no permite cambiar legajo
     if (req.body.legajo && Number(req.body.legajo) !== Number(legajo)) {
       return res.status(409).json({
         error: 'No se permite modificar el legajo'
       })
     }
 
-    // valida datos mínimos
-    if (!nombre || !apellido || !email) {
-      return res.status(400).json({
-        error: 'Nombre, apellido y email son obligatorios'
-      })
-    }
-
-    // actualiza la fecha de modificación
+    // actualiza la fecha modificación
     const fechaActual = new Date().toISOString().split('T')[0]
 
-    alumnos[indexAlumno] = {
-      ...alumnos[indexAlumno],
-      nombre,
-      apellido,
-      email,
-      isActive:
-        isActive !== undefined ? isActive : alumnos[indexAlumno].isActive,
-      modificacion: fechaActual
-    }
+    const alumnoActualizado = new AlumnoModel(
+      nombre || alumnos[indexAlumno].nombre,
+      apellido || alumnos[indexAlumno].apellido,
+      email || alumnos[indexAlumno].email,
+      Number(legajo),
+      alumnos[indexAlumno].fechaAlta,
+      fechaActual,
+      isActive !== undefined ? isActive : alumnos[indexAlumno].isActive
+    )
+
+    alumnos[indexAlumno] = alumnoActualizado.getAllAttributes()
 
     await fs.writeFile(dataPath, JSON.stringify(alumnos, null, 2))
 
     console.log(`[PUT] Alumno actualizado correctamente. Legajo: ${legajo}`)
 
+    // 201
     return res.status(201).json({
       message: 'Alumno actualizado correctamente',
       alumno: alumnos[indexAlumno]
@@ -189,7 +185,7 @@ const putAlumno = async (req, res) => {
   } catch (error) {
     console.log(error)
 
-    // 500
+    // error: 500
     return res.status(500).json({
       error: 'No se pudo actualizar el alumno'
     })
