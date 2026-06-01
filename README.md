@@ -124,6 +124,12 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 
 ---
 
+#### `PUT /alumnos`
+
+**Descripcion:** Busca un alumno por legajo y luego modifica el dato que quiera el usuario exceptuando el legajo.
+
+![Screenshot de Postman]()
+
 ### Materias
 
 #### `GET /materias`
