@@ -112,7 +112,7 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 
 **Descripción:** Búsqueda filtrada de alumnos por apellido y/o estado activo.
 
-!Screenshot de Postman(./docs/screenshot/getAlumnoBySearch.png)
+![Screenshot de Postman](./docs/screenshot/getAlumnoBySearch.png)
 
 ---
 
@@ -120,7 +120,7 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 
 **Descripción:** Registra un nuevo alumno en el sistema.
 
-!Screenshot de Postman(./docs/screenshot/postAlumno.png)
+![Screenshot de Postman](./docs/screenshot/postAlumno.png)
 
 ---
 
