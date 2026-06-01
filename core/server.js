@@ -17,10 +17,9 @@ class Server {
 
   rutas () {
     this.app.use('/alumnos', require('../routes/alumno.routes'))
+    this.app.use('/materias', require('../routes/extra/materia.routes'))
     this.app.use('/notas', require('../routes/extras/nota.routes'))
     /*
-    this.app.use('/materias', require('../routes/extra/materia.routes'))
-    
     this.app.use('/profesores', require('../routes/extra/profesor.routes'))
     */
 
