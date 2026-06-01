@@ -142,6 +142,24 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 
 ---
 
+### Notas
+
+#### `GET /notas`
+
+**Descripción:** Obtiene la lista completa de todas las notas registradas en el sistema.
+
+![Screenshot de Postman](./docs/screenshots/get-notas.jpeg)
+
+---
+
+#### `POST /notas`
+
+**Descripción:** Registra una nueva nota en el sistema.
+
+![Screenshot de Postman](./docs/screenshots/post-notas.jpeg)
+
+---
+
 ## 📂 Estructura de Archivos JSON
 
 ### Alumnos (`data/alumnos.json`)
@@ -207,5 +225,19 @@ Función **asíncrona** que obtiene la lista completa de materias. Lee el archiv
 #### `postMateria()`
 
 Procesa el registro de nuevas materias mediante `POST`. Realiza validación defensiva verificando que todos los campos obligatorios (`idMateria`, `nombre`, `cuatrimestre`) estén presentes en el cuerpo de la solicitud; si falta alguno, retorna `400 Bad Request`. Lee el archivo `sys-materias.json`, utiliza el método `.find()` para verificar si el `idMateria` ya existe en el sistema; en caso afirmativo, retorna `409 Conflict` indicando duplicación. Agrega la nueva materia al array y persiste los cambios reescribiendo el archivo con `fs.writeFile()`. Si la materia se registra exitosamente, retorna `201 Created` con el objeto creado; si ocurre cualquier otro error durante el proceso, captura la excepción y retorna estado `500`.
+
+---
+
+### Controllers/Notas
+
+#### `getNotas()`
+
+Función **asíncrona** que obtiene la lista completa de notas registradas. Lee el archivo `sys-notas.json` ubicado en la carpeta `extras` mediante `fs.promises` para operaciones de lectura no bloqueante. Implementa un bloque `try/catch` para manejo defensivo de errores. Convierte el contenido del archivo (formato texto) a objeto JavaScript mediante `JSON.parse()` y devuelve el array completo de notas al cliente con código HTTP `200`. Si falla la lectura del archivo, captura la excepción y retorna estado `500`.
+
+---
+
+#### `postNota()`
+
+Procesa el registro de nuevas notas mediante `POST`. Realiza validación defensiva verificando que todos los campos obligatorios estén presentes en el cuerpo de la solicitud; si falta alguno, retorna `400 Bad Request`. Lee el archivo `sys-notas.json`, genera automáticamente un nuevo identificador único para la nota, obtiene los datos enviados mediante `req.body`, agrega la nueva nota al array de notas y persiste los cambios reescribiendo el archivo con `fs.writeFile()`. Si la nota se registra exitosamente, retorna `201 Created` con el objeto creado; si ocurre cualquier otro error durante el proceso, captura la excepción y retorna estado `500`.
 
 ---

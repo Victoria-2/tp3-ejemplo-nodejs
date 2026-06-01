@@ -129,6 +129,68 @@ const getAlumnoBySearch = async (req, res) => {
     return res.status(500).json({ error: 'No se pudieron obtener los alumnos' })
   }
 }
+//Put alumno
+
+const putAlumno = async (req, res) => {
+  try {
+    const data = await fs.readFile(dataPath, 'utf8')
+    const alumnos = JSON.parse(data)
+
+    const { legajo } = req.params
+    const { nombre, apellido, email, isActive } = req.body
+
+    // busca alumno
+    const indexAlumno = alumnos.findIndex(
+      (a) => Number(a.legajo) === Number(legajo)
+    )
+
+    //error: no existe
+    if (indexAlumno === -1) {
+      return res.status(400).json({
+        error: `No existe un alumno con el legajo ${legajo}`
+      })
+    }
+
+    //error: no permite cambiar legajo
+    if (req.body.legajo && Number(req.body.legajo) !== Number(legajo)) {
+      return res.status(409).json({
+        error: 'No se permite modificar el legajo'
+      })
+    }
+
+    // actualiza la fecha modificación
+    const fechaActual = new Date().toISOString().split('T')[0]
+
+    const alumnoActualizado = new AlumnoModel(
+      nombre || alumnos[indexAlumno].nombre,
+      apellido || alumnos[indexAlumno].apellido,
+      email || alumnos[indexAlumno].email,
+      Number(legajo),
+      alumnos[indexAlumno].fechaAlta,
+      fechaActual,
+      isActive !== undefined ? isActive : alumnos[indexAlumno].isActive
+    )
+
+    alumnos[indexAlumno] = alumnoActualizado.getAllAttributes()
+
+    await fs.writeFile(dataPath, JSON.stringify(alumnos, null, 2))
+
+    console.log(`[PUT] Alumno actualizado correctamente. Legajo: ${legajo}`)
+
+    // 201
+    return res.status(201).json({
+      message: 'Alumno actualizado correctamente',
+      alumno: alumnos[indexAlumno]
+    })
+  } catch (error) {
+    console.log(error)
+
+    // error: 500
+    return res.status(500).json({
+      error: 'No se pudo actualizar el alumno'
+    })
+  }
+}
 
 // DELETE alumno por numero de legajo
 const deleteAlumno = async (req, res) => {
@@ -173,5 +235,6 @@ module.exports = {
   getAlumnoById,
   postAlumno,
   getAlumnoBySearch,
-  deleteAlumno
+  deleteAlumno,
+  putAlumno
 }
