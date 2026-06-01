@@ -41,7 +41,7 @@ const getAlumnoById = async (req, res) => {
 }
 
 // POST alumnos
-const createAlumno = async (req, res) => {
+const postAlumno = async (req, res) => {
   try {
     const data = await fs.readFile('./data/alumnos.json', 'utf8')
     const alumnos = JSON.parse(data)
@@ -127,6 +127,6 @@ const getAlumnoBySearch = async (req, res) => {
 module.exports = {
   getAlumnoAll,
   getAlumnoById,
-  createAlumno,
+  postAlumno,
   getAlumnoBySearch
 }
