@@ -141,12 +141,12 @@ El equipo implementó un flujo de trabajo estructurado basado en ramas:
 ![Screenshot de Postman](./docs/screenshots/postmaterias.png)
 
 ---
+
 #### `DELETE /alumnos/:legajo`
 
 **Descripción:** Realiza la baja lógica de un alumno, marcándolo como inactivo dentro del sistema.
 
-![Screenshot de Postman](./docs/screenshots/deleteAlumno.png)
----
+## ![Screenshot de Postman](./docs/screenshots/deleteAlumno.png)
 
 ## 📂 Estructura de Archivos JSON
 
