@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
+const errorHandler = require('../handlers/error-handler.handlers')
 
 class Server {
   constructor () {
@@ -8,6 +9,7 @@ class Server {
     this.port = process.env.PORT || 3001
     this.middleware()
     this.rutas()
+    this.errorHandlerGlobal()
   }
 
   middleware () {
@@ -17,24 +19,21 @@ class Server {
 
   rutas () {
     this.app.use('/alumnos', require('../routes/alumno.routes'))
+    this.app.use('/notas', require('../routes/extras/nota.routes'))
     /*
     this.app.use('/materias', require('../routes/extra/materia.routes'))
-    this.app.use('/notas', require('../routes/extra/nota.routes'))
     this.app.use('/profesores', require('../routes/extra/profesor.routes'))
     */
+  }
 
+  errorHandlerGlobal () {
     // manejo de errores
-    this.app.use((req, res, next) => {
-      return res.status(400).json({ msg: 'Error.' })
-    })
     this.app.use((err, req, res, next) => {
       console.error(err.stack)
       return res.status(404).json({ msg: 'Error. Pagina no encontrada' })
     })
-    this.app.use((err, req, res, next) => {
-      console.error(err.stack)
-      return res.status(500).json({ msg: 'Internal Server Error' })
-    })
+    // error handler, sería bueno que el 404 esté manejado en la línea 36
+    this.app.use(errorHandler)
   }
 
   listen () {

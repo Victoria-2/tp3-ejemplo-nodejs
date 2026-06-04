@@ -4,6 +4,7 @@
     "module": "CommonJS" /* 🔴 CLAVE: Fuerza a traducir los import/export a require */,
     "moduleResolution": "node" /* Cómo busca los archivos Node */,
     "ignoreDeprecations": "6.0",
+    "types": ["node"],
     "esModuleInterop": true /* Permite compatibilidad total entre require e import */,
     "forceConsistentCasingInFileNames": true /* Respeta mayúsculas y minúsculas */,
     "strict": true /* Habilita el tipado estricto de TS */,
